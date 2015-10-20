@@ -1,0 +1,26 @@
+{
+  "name": "angular-spa-from-scratch",
+  "version": "0.0.1",
+  "homepage": "https://github.com/bbaaxx/angular-spa-from-scratch",
+  "authors": [
+    "Eduardo Mosqueda <bbaaxx@gmail.com>"
+  ],
+  "description": "A project to document my adventures building an Angular SPA trying to follow best practices and those kinds of nice things to learn.",
+  "main": "",
+  "moduleType": [],
+  "keywords": [
+    "angular",
+    "spa",
+    "notes",
+    "tutorial"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
