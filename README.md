@@ -168,3 +168,93 @@ It usually involves installing some version of visual studio compilers and
 dealing with enviromental variables, google a lot and you will do just fine.
 
 ## Next on : The gulpiest side of gulp
+
+### Environment considerations
+Is better to have Gulp installed globally as suggested previously to use its
+cli, gulp is still required locally as we will require it from the Gulpfile
+below.
+
+The local install is required in the Gulpfile which we will get into in
+a little while. But it can also be used to execute locally using npm scripts
+take a look in [here](https://docs.npmjs.com/cli/run-script).
+
+### Beginning with gulp tubes, pipes and streams.
+If you know what this does: `ls -la | grep somefile` then 
+[GulpJs](http://gulpjs.com/) will be  easy to understand, gulp acts in the 
+principle of pipes using the amazing NodeJs 
+[stream api](https://nodejs.org/api/stream.html).
+
+Basically you create named tasks that you can later require as prerequisites
+to other tasks. Here is a task definition:
+
+    gulp.task('someTask', function(){
+        // Task body
+    });
+
+This tasks are copmosed of ... lets say *tubes* that will
+_pipe down_ an input that can be a bunch of files or a string of some kind
+and many other things. As these inputs will effectively become streams, you
+create a gulp stream using the `gulp.src()` function and passing a glob
+parameter that can be an array.
+
+    gulp
+        .src(['./*.js', './app/**/*.js']);
+
+These inputs will be processed by gulp plugins and other stream treating
+functions as they travel across the tube. This is an example of a task:
+
+    gulp.task('vet', function() {
+        log('Analyzing source with JSHint and JSCS');
+    
+        return gulp
+            .src(config.alljs)
+            .pipe($.if(args.verbose, $.print()))
+            .pipe($.jshint())
+            .pipe($.jshint.reporter('jshint-stylish', {verbose: true}))
+            .pipe($.jshint.reporter('fail'))
+            .pipe($.jscs());
+    });
+    
+In the case of this task, the stream consists of a bunch of js files that
+will be processed by the `gulp-print` plugin if a `--verbose` parameter is
+passed and then to `gulp-jshint` and its reporters and last to the `gulp-jscs`
+thingie for code style. In this case the output is whatever `print`, `jshint`,
+and `jscs` want to do with the streams which is to display at the console.
+
+But sometimes the tube will need to put the stream as an output on a folder or
+file, for this we use `gulp.dest()` function as in the example below:
+
+    gulp.task('styles', ['clean-styles'], function() {
+        log('Compiling Less --> CSS');
+    
+        return gulp
+            .src(config.less)
+            .pipe($.plumber()) // exit gracefully if something fails after this
+            .pipe($.less())
+    //      .pipe($.autoprefixer({browsers: ['last 2 version', '> 5%']}))
+            .pipe(gulp.dest(config.temp));
+    });
+    
+This one other task will compile the less files defined in the `config.less`
+variable and autoprefix them before placing them at the location defined in 
+the `config.temp` variable.
+
+*NOTE ON PLUMBER*: The [gulp-plumber](https://github.com/floatdrop/gulp-plumber)
+plugin allows or prepares the tube to handle breaking plugins or 
+functions in a graceful manner.
+
+Those were 5 minutes with Gulp, now additional details on Gulp can be learned
+at the [GulpJs](http://gulpjs.com/) site.
+
+## Enter jspm and ES6
+At this point I decided that the whole thing will be even nicer if it helps
+me learn ES6 syntax so before going on with dependecies and stuff, I will
+install jspm which makes babel a pie to use so:
+
+    $ npm install jspm -g
+    $ npm install jspm --save
+    
+Next we init the jspm project. Just say yes to everything except for the
+base path that should point to /src/client and the ES6 transpiler to be
+babel
+

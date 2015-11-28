@@ -92,7 +92,9 @@ gulp.task('images', ['clean-images'], function() {
 
     return gulp
         .src(config.images)
+        .pipe($.cached('images'))
         .pipe($.imagemin({optimizationLevel: 4}))
+        .pipe($.remember('images'))
         .pipe(gulp.dest(config.build + 'images'));
 });
 
