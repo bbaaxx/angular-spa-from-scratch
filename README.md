@@ -254,7 +254,39 @@ install jspm which makes babel a pie to use so:
     $ npm install jspm -g
     $ npm install jspm --save
     
-Next we init the jspm project. Just say yes to everything except for the
-base path that should point to /src/client and the ES6 transpiler to be
-babel
+Next we init the jspm project. Just say yes to everything except the ES6 
+transpiler, make sure to use babel for that.
+We will have to deal later with those two paths that jspm requires, the base 
+path and the public URL path. Don't worry for now about them just now.
+
+Is time to include the newly created `jspm_packages` folder to our `.gitignore`
+file, let's do that now.
+
+    $ echo "jspm_packages/" >> .gitignore
+    $ git add .gitignore
+    $ git commit -m "updated .gitignore for jspm"
+    $ git add .
+    $ git commit -m "added jspm system"
+
+We may eventually get rid of bower as the objective of jspm is to unify
+the package management of javascript stuff for both the server and client.
+
+Soo, jspm ... yeah ! Well, let's speed things up a little bit to see some
+results because we love to see stuff happening. I'm going to take the server 
+script from hottowel as-it-is to start seeing a webpage and wire up jspm, then
+I will take it from there to see what do I need from gulp and how can I do to
+improve the overall dev/test/build processes.
+
+So, some commits ago I started do do copy&paste of the stuff inside the
+src/server directory and also some stuff from the client folder to see if I
+was going in the right direction. Turns out I was so now I can clearly explain
+what that server code is doing.
+
+Hottowel features a very detailed configuration file for the gulp stuff and
+starting there is the key to see how the gulp and server parts are interacting.
+Basically gulp is calling an old friend from the Node world: nodemon. This
+jewel will watch for changes to files and restart a node process, it supports
+passing arguments and variables to the process and includes a kinda-useful
+watch functionality that honestly is a bit confusing to configure. Well, you'll
+see what I mean, in the meantime let's get to work.
 
