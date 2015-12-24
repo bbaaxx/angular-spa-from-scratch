@@ -1,3 +1,5 @@
+/* jshint ignore:start */
+// jscs:disable
 System.config({
   baseURL: "/",
   defaultJSExtensions: true,
